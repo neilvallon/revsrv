@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -60,7 +61,11 @@ func main() {
 		http.FileServer(dir).ServeHTTP(w, r)
 	})
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	var bindFlag string
+	flag.StringVar(&bindFlag, "bind", ":8000", "change listening port for the server")
+	flag.Parse()
+
+	log.Fatal(http.ListenAndServe(bindFlag, nil))
 }
 
 func getRootDir(host string) http.Dir {
